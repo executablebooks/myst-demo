@@ -1,0 +1,70 @@
+{
+  "name": "myst-demo",
+  "version": "0.0.3",
+  "description": "A demo web-component for MyST markdown",
+  "main": "dist/src/myst-demo.js",
+  "unpkg": "dist/myst-demo.min.js",
+  "types": "dist/src/myst-demo.d.ts",
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/executablebooks/myst-demo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/executablebooks/myst-demo/issues"
+  },
+  "homepage": "https://github.com/executablebooks/myst-demo",
+  "scripts": {
+    "build": "yarn run clean; webpack --config webpack.prod.js",
+    "build:dev": "yarn run clean; webpack --config webpack.dev.js",
+    "clean": "rimraf dist",
+    "lint": "eslint 'src/**/*.ts'",
+    "start": "webpack serve --liveReload --open --config webpack.dev.js",
+    "prepublishOnly": "yarn run build;"
+  },
+  "keywords": [
+    "web-components",
+    "lit-element",
+    "typescript",
+    "lit",
+    "jupyter",
+    "myst"
+  ],
+  "author": "Rowan Cockett",
+  "license": "MIT",
+  "dependencies": {
+    "highlight.js": "^10.7.2",
+    "lit": "^2.0.0-rc.1",
+    "markdown-it-myst": "^0.0.9"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^0.12.1",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^3.0.1",
+    "@esm-bundle/chai": "^4.1.5",
+    "@open-wc/testing": "^2.5.32",
+    "@open-wc/testing-karma": "^4.0.9",
+    "@types/markdown-it": "^12.0.1",
+    "@types/mocha": "^7.0.2",
+    "@typescript-eslint/eslint-plugin": "^4.25.0",
+    "@typescript-eslint/parser": "^4.25.0",
+    "@webcomponents/webcomponentsjs": "^2.5.0",
+    "copy-webpack-plugin": "^9.0.0",
+    "deepmerge": "^4.2.2",
+    "eslint": "^7.27.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.3",
+    "express": "^4.17.1",
+    "html-webpack-plugin": "^5.3.1",
+    "lit-analyzer": "^1.1.10",
+    "mocha": "^7.1.1",
+    "prettier": "^2.0.4",
+    "rimraf": "^3.0.2",
+    "ts-loader": "^9.2.2",
+    "typescript": "^3.8.3",
+    "web-component-analyzer": "^1.0.3",
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.7.3"
+  }
+}
