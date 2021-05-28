@@ -2,7 +2,7 @@
 [![markdown-it-myst on npm](https://img.shields.io/npm/v/myst-demo.svg)](https://www.npmjs.com/package/myst-demo)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/executablebooks/myst-demo/blob/master/LICENSE)
 [![CI](https://github.com/executablebooks/myst-demo/workflows/CI/badge.svg)](https://github.com/executablebooks/myst-demo/actions)
-[![demo](https://img.shields.io/badge/live-demo-blue)](https://executablebooks.github.io/myst-demo/demo/index.html)
+[![demo](https://img.shields.io/badge/live-demo-blue)](https://executablebooks.github.io/myst-demo)
 
 A web-component `<myst-demo>` that uses `markdown-it-myst` to demo the html rendering and the html output.
 
