@@ -69,7 +69,7 @@ export class MystDemo extends LitElement {
     this.code = trim(this.innerHTML);
     this.myst = MyST();
     this.inputEl.value = this.code;
-    this.onChange();
+    this.onChange(false);
   }
 
   render() {
@@ -98,12 +98,15 @@ export class MystDemo extends LitElement {
     this.requestUpdate();
   }
 
-  private onChange() {
+  // Note, that first arg is also an event handler above
+  private onChange(focus = true) {
     this.result = this.myst?.render(this.inputEl.value) as string;
     this.innerHTML = this.result;
-    (window as any).MathJax?.typesetPromise?.().then(() => this.inputEl.focus());
+    (window as any).MathJax?.typesetPromise?.().then(() => {
+      if (focus !== false) this.inputEl.focus();
+    });
     this.requestUpdate();
-    this.inputEl.focus();
+    if (focus !== false) this.inputEl.focus();
   }
 
   private get inputEl(): HTMLInputElement {
