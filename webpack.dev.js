@@ -7,9 +7,9 @@ module.exports = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
   devServer: {
-    contentBase: './dist',
-    before(app) {
-      app.use('/images', express.static(path.resolve('images')));
+    static: './dist',
+    onBeforeSetupMiddleware(server) {
+      server.app.use('/images', express.static(path.resolve('images')));
     },
   },
 });

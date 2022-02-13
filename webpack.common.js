@@ -18,9 +18,7 @@ module.exports = {
       template: 'public/index.html',
     }),
     new CopyPlugin({
-      patterns: [
-        { from: 'node_modules/markdown-it-myst/dist/myst.css', to: 'myst.css' },
-      ],
+      patterns: [{ from: 'node_modules/mystjs/dist/myst.css', to: 'myst.css' }],
     }),
   ],
   externals: {
@@ -39,16 +37,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader',
-        ],
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        use: [
-          'file-loader',
-        ],
+        use: ['file-loader'],
       },
     ],
   },

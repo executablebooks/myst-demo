@@ -1,10 +1,18 @@
 /* eslint-disable import/extensions */
 import { LitElement, html, css } from 'lit';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
-import { MyST } from 'markdown-it-myst';
-import { customElement, property } from 'lit/decorators.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import yaml from 'js-yaml';
+import { customElement } from 'lit/decorators.js';
 import hljs from 'highlight.js';
+import type { MyST } from 'mystjs';
 import { trim } from './utils';
+
+declare global {
+  // eslint-disable-next-line no-unused-vars
+  interface Window {
+    MyST: typeof MyST;
+  }
+}
 
 @customElement('myst-demo')
 export class MystDemo extends LitElement {
@@ -13,9 +21,11 @@ export class MystDemo extends LitElement {
       display: block;
       position: relative;
       max-width: 800px;
-      box-shadow: rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px, rgb(0 0 0 / 20%) 0px 3px 1px -2px;
-      padding-top: 15px;
+      box-shadow: rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px,
+        rgb(0 0 0 / 20%) 0px 3px 1px -2px;
       margin: 20px 0px;
+      border-radius: 3px;
+      overflow: hidden;
     }
     slot {
       background: red;
@@ -32,75 +42,160 @@ export class MystDemo extends LitElement {
     textarea:focus {
       outline: none;
     }
-    button {
+    .buttons {
       position: absolute;
-      top: 0px;
-      right: 0px;
+      top: -1px;
+      left: 0px;
+      border: 1px solid #333;
+    }
+    .right {
+      right: -1px;
+    }
+    button {
       text-transform: uppercase;
+      font-size: 1em;
       border: none;
       cursor: pointer;
-      background: rgb(224, 224, 224);
       outline: none;
       user-select: none;
+      float: right;
+      background: white;
     }
-    #myst {
+    button:hover {
+      background: #f7f8fa;
+    }
+    .myst {
       position: relative;
     }
-    #preview {
+    .myst > textarea {
+      padding: 1.5em;
+      font-size: 1.2em;
+      width: calc(100% - 3em);
+      font-family: monospace;
+      background: #333;
+      color: white;
+    }
+    .preview {
+      position: relative;
       min-height: 1em;
+      padding: 15px;
+    }
+    .previewSlot {
+      margin-top: 1em;
     }
   `;
 
-  @property({ type: Number })
-  rows = 4;
-
-  @property({ type: String })
   code = '';
+
+  initial = '';
 
   #copyText = 'copy';
 
-  showHTML = false;
+  previewType = 'preview';
 
   result = '';
 
-  myst?: ReturnType<typeof MyST>;
+  ast = '';
+
+  myst?: MyST;
 
   firstUpdated() {
-    this.code = trim(this.innerHTML);
-    this.myst = MyST();
+    if (document.readyState === 'interactive') {
+      this.captureCode();
+    } else {
+      window.addEventListener('load', () => this.captureCode());
+    }
+  }
+
+  captureCode() {
+    const code = trim(this.innerHTML);
+    this.code = code;
+    this.initial = code;
     this.inputEl.value = this.code;
     this.onChange(false);
   }
 
   render() {
-    const { showHTML } = this;
-    let highlight = '';
-    if (this.code) {
-      const r = hljs.highlight(this.result, { language: 'html' });
-      highlight = r.value;
-    }
+    const { previewType } = this;
+    console.log({ code: this.code, initial: this.initial });
+    const htmlCode = hljs.highlight(this.result ?? '', { language: 'html' }).value;
+    const yamlCode = hljs.highlight(this.ast ?? '', { language: 'yaml' }).value;
+    setTimeout(() => this.resizeTextArea(), 0);
+    const background = 'background: #355E9A; color: white;';
+    const changed = this.code !== this.initial;
     return html`
-      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/xcode.min.css">
-      <button @click="${this.onClick}">${showHTML ? 'preview' : 'html'}</button>
-      <div id="preview" style="${!showHTML ? '' : 'display: none'}">
-        <slot></slot>
+      <link
+        rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/xcode.min.css"
+      />
+      <div class="myst">
+        <div class="buttons right">
+          <button @click="${this.copyToClipboard}">${this.#copyText}</button>
+          ${changed ? html`<button @click="${this.reset}">RESET</button>` : ''}
+        </div>
+        <textarea id="code" @input="${this.onChange}"></textarea>
       </div>
-      <pre style="${showHTML ? '' : 'display: none'}"><code class="hljs html">${unsafeHTML(highlight)}</code></pre>
-      <div id="myst">
-        <button @click="${this.copyToClipboard}">${this.#copyText}</button>
-        <textarea id="code" rows="${this.rows}" @input="${this.onChange}"></textarea>
+      <div class="preview">
+        <div class="buttons">
+          <button
+            style="${previewType === 'html' ? background : ''}"
+            @click="${() => this.onClick('html')}"
+          >
+            HTML
+          </button>
+          <button
+            style="${previewType === 'ast' ? background : ''}"
+            @click="${() => this.onClick('ast')}"
+          >
+            AST
+          </button>
+          <button
+            style="${previewType === 'preview' ? background : ''}"
+            @click="${() => this.onClick('preview')}"
+          >
+            DEMO
+          </button>
+        </div>
+        <div class="previewSlot" style="${previewType === 'preview' ? '' : 'display: none'}">
+          <slot></slot>
+        </div>
+        <pre
+          style="${previewType === 'ast' ? '' : 'display: none'}"
+        ><code class="hljs yaml">${unsafeHTML(yamlCode)}</code></pre>
+        <pre
+          style="${previewType === 'html' ? '' : 'display: none'}"
+        ><code class="hljs html">${unsafeHTML(htmlCode)}</code></pre>
       </div>
     `;
   }
 
-  private onClick() {
-    this.showHTML = !this.showHTML;
+  private onClick(type: string) {
+    this.previewType = type;
     this.requestUpdate();
   }
 
+  private resizeTextArea() {
+    const el = this.shadowRoot?.getElementById('code');
+    if (!el) return;
+    el.style.cssText = 'height:auto; padding:0';
+    el.style.cssText = `height:${el.scrollHeight}px`;
+  }
+
+  private reset() {
+    this.inputEl.value = this.initial;
+    this.onChange();
+  }
+
   // Note, that first arg is also an event handler above
-  private onChange(focus = true) {
-    this.result = this.myst?.render(this.inputEl.value) as string;
+  private async onChange(focus = true) {
+    this.code = this.inputEl.value;
+    if (!window.MyST) {
+      this.requestUpdate();
+      throw new Error('Could not find MyST parser on window.');
+    }
+    this.myst = this.myst ?? new window.MyST();
+    this.ast = yaml.dump(this.myst?.parse(this.code));
+    this.result = (await this.myst?.render(this.code)) as string;
     this.innerHTML = this.result;
     (window as any).MathJax?.typesetPromise?.().then(() => {
       if (focus !== false) this.inputEl.focus();
@@ -113,17 +208,24 @@ export class MystDemo extends LitElement {
     return this.shadowRoot!.getElementById('code')! as HTMLInputElement;
   }
 
-  private copyToClipboard() {
-    this.inputEl.focus();
-    this.inputEl.setSelectionRange(0, this.inputEl.value.length);
+  private async copyToClipboard() {
     try {
-      document.execCommand('copy');
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(this.inputEl.value);
+      } else {
+        this.inputEl.focus();
+        this.inputEl.setSelectionRange(0, this.inputEl.value.length);
+        document.execCommand('copy');
+      }
       this.#copyText = 'done';
     } catch (err) {
       this.#copyText = 'error';
     }
     // Return to the copy button after a second.
-    setTimeout(() => { this.#copyText = 'copy'; this.requestUpdate(); }, 1000);
+    setTimeout(() => {
+      this.#copyText = 'copy';
+      this.requestUpdate();
+    }, 1000);
     this.requestUpdate();
   }
 }
