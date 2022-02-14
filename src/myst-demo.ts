@@ -23,9 +23,10 @@ export class MystDemo extends LitElement {
       max-width: 800px;
       box-shadow: rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px,
         rgb(0 0 0 / 20%) 0px 3px 1px -2px;
-      margin: 20px 0px;
+      margin: 20px;
       border-radius: 3px;
       overflow: hidden;
+      padding: 0 !important;
     }
     slot {
       background: red;
@@ -33,11 +34,16 @@ export class MystDemo extends LitElement {
     textarea {
       display: block;
       padding: 5px;
-      border: none;
       border-radius: 0;
-      border-top: 1px solid rgb(224, 224, 224);
+      border: 1px solid rgb(224, 224, 224);
       resize: none;
       width: calc(100% - 10px);
+      padding: 1.5em;
+      font-size: 1.2em;
+      width: calc(100% - 3em);
+      font-family: monospace;
+      background: whitesmoke;
+      color: rgb(4, 81, 165);
     }
     textarea:focus {
       outline: none;
@@ -45,8 +51,10 @@ export class MystDemo extends LitElement {
     .buttons {
       position: absolute;
       top: -1px;
-      left: 0px;
       border: 1px solid #333;
+    }
+    .left {
+      left: 0px;
     }
     .right {
       right: -1px;
@@ -66,14 +74,6 @@ export class MystDemo extends LitElement {
     }
     .myst {
       position: relative;
-    }
-    .myst > textarea {
-      padding: 1.5em;
-      font-size: 1.2em;
-      width: calc(100% - 3em);
-      font-family: monospace;
-      background: #333;
-      color: white;
     }
     .preview {
       position: relative;
@@ -117,7 +117,6 @@ export class MystDemo extends LitElement {
 
   render() {
     const { previewType } = this;
-    console.log({ code: this.code, initial: this.initial });
     const htmlCode = hljs.highlight(this.result ?? '', { language: 'html' }).value;
     const yamlCode = hljs.highlight(this.ast ?? '', { language: 'yaml' }).value;
     setTimeout(() => this.resizeTextArea(), 0);
@@ -136,7 +135,7 @@ export class MystDemo extends LitElement {
         <textarea id="code" @input="${this.onChange}"></textarea>
       </div>
       <div class="preview">
-        <div class="buttons">
+        <div class="buttons left">
           <button
             style="${previewType === 'html' ? background : ''}"
             @click="${() => this.onClick('html')}"
