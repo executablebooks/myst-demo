@@ -17,9 +17,6 @@ module.exports = {
       title: 'myst-demo',
       template: 'public/index.html',
     }),
-    new CopyPlugin({
-      patterns: [{ from: 'node_modules/mystjs/dist/myst.css', to: 'myst.css' }],
-    }),
   ],
   externals: {
     katex: 'katex',

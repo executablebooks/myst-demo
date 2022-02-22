@@ -10,7 +10,7 @@ import { trim } from './utils';
 declare global {
   // eslint-disable-next-line no-unused-vars
   interface Window {
-    MyST: typeof MyST;
+    myst: { MyST: typeof MyST };
   }
 }
 
@@ -188,11 +188,11 @@ export class MystDemo extends LitElement {
   // Note, that first arg is also an event handler above
   private async onChange(focus = true) {
     this.code = this.inputEl.value;
-    if (!window.MyST) {
+    if (!window.myst.MyST) {
       this.requestUpdate();
       throw new Error('Could not find MyST parser on window.');
     }
-    this.myst = this.myst ?? new window.MyST();
+    this.myst = this.myst ?? new window.myst.MyST();
     this.ast = yaml.dump(this.myst?.parse(this.code));
     this.result = (await this.myst?.render(this.code)) as string;
     this.innerHTML = this.result;
