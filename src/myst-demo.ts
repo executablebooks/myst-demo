@@ -1,5 +1,6 @@
 /* eslint-disable import/extensions */
 import { LitElement, html, css } from 'lit';
+import { decode } from 'he';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import yaml from 'js-yaml';
 import { customElement } from 'lit/decorators.js';
@@ -108,7 +109,7 @@ export class MystDemo extends LitElement {
   }
 
   captureCode() {
-    const code = trim(this.innerHTML);
+    const code = decode(trim(this.innerHTML));
     this.code = code;
     this.initial = code;
     this.inputEl.value = this.code;
