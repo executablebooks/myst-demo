@@ -7,7 +7,7 @@
     <script src="https://unpkg.com/mystjs"></script>
     <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="../node_modules/lit/polyfill-support.js"></script>
-    <link rel="stylesheet" href="basic-styles.css">
+    <link rel="stylesheet" href="basic-styles.css" />
     <style>
       article {
         max-width: 800px;
@@ -23,15 +23,17 @@
 &lt;script async src="https://unpkg.com/myst-demo"&gt;&lt;/script&gt;
       </code></pre>
       <p>Try editing the text below the demo and click on the <code>HTML</code> button.</p>
-<myst-demo>```{warning}
-This is a warning
-```</myst-demo>
+      <myst-demo id="demo-1"></myst-demo>
 
-<myst-demo rows="3">```{note}
-This is a warning
-```</myst-demo>
+      <myst-demo id="demo-2" rows="3"></myst-demo>
     </article>
     <script>
+      document.getElementById('demo-1').innerHTML = `\`\`\`{warning}
+This is a warning
+\`\`\``;
+      document.getElementById('demo-2').innerHTML = `\`\`\`{note}
+This is a warning
+\`\`\``;
       // Setup Mathjax
       MathJax = {
         tex: {

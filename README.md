@@ -1,4 +1,5 @@
 # myst-demo
+
 [![markdown-it-myst on npm](https://img.shields.io/npm/v/myst-demo.svg)](https://www.npmjs.com/package/myst-demo)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/executablebooks/myst-demo/blob/master/LICENSE)
 [![CI](https://github.com/executablebooks/myst-demo/workflows/CI/badge.svg)](https://github.com/executablebooks/myst-demo/actions)
@@ -6,39 +7,42 @@
 
 A web-component `<myst-demo>` that uses `markdown-it-myst` to demo the html rendering and the html output.
 
-Add the following to something that works with HTML!
+Add the following to something that works with HTML and an AST!
 
 ````html
-<myst-demo rows="3">
-```{callout} Callout
-This is a callout!
-```
-</myst-demo>
+<myst-demo rows="3"> ```{callout} Callout This is a callout! ``` </myst-demo>
 ````
 
 ![<myst-demo> component](./images/myst-demo.gif)
 
 # Libraries
 
+You must add `mystjs` independently, you can see [documentation here](https://github.com/executablebooks/mystjs).
+
 ```html
-<link rel="stylesheet" href="https://unpkg.com/myst-demo/dist/myst.css">
+<script src="https://unpkg.com/mystjs"></script>
 <script async src="https://unpkg.com/myst-demo"></script>
 <!-- Use the following if you require math -->
 <script>
-// Setup Mathjax
-MathJax = {
-  tex: {
-    inlineMath: [['\\(', '\\)']],
-    displayMath: [['\\[', '\\]']],
-    processEnvironments: false,
-    processRefs: false,
-  },
-  svg: {
-    fontCache: 'global'
-  }
-};
+  // Setup Mathjax
+  MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['\\[', '\\]']],
+      processEnvironments: false,
+      processRefs: false,
+    },
+    svg: {
+      fontCache: 'global',
+    },
+  };
 </script>
-<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<script
+  type="text/javascript"
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+></script>
 ```
 
 ## Setup
