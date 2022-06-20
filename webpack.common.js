@@ -17,6 +17,9 @@ module.exports = {
       title: 'myst-demo',
       template: 'public/index.html',
     }),
+    new CopyPlugin({
+      patterns: [{ from: 'public/basic-styles.css', to: 'basic-styles.css' }],
+    }),
   ],
   externals: {
     katex: 'katex',
