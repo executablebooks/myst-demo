@@ -1,52 +1,18 @@
-<!DOCTYPE html>
-
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>myst-demo</title>
-    <link rel="stylesheet" href="https://unpkg.com/myst-demo/dist/myst.css">
-    <script async src="https://unpkg.com/myst-demo"></script>
-    <style>
-      article {
+<!doctype html><html><head><meta charset="utf-8"/><title>myst-demo</title><script src="https://unpkg.com/mystjs"></script><script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script><script src="../node_modules/lit/polyfill-support.js"></script><link rel="stylesheet" href="basic-styles.css"><style>article {
         max-width: 800px;
         margin: auto;
-      }
-    </style>
-  </head>
-  <body>
-    <article>
-      <h1>Using <code>myst-demo</code></h1>
-      <pre><code>
+      }</style><script defer="defer" src="myst-demo.min.js"></script></head><body><article><h1>Using <code>myst-demo</code></h1><pre><code>
 &lt;link rel="stylesheet" href="https://unpkg.com/myst-demo/dist/myst.css"&gt;
 &lt;script async src="https://unpkg.com/myst-demo"&gt;&lt;/script&gt;
-      </code></pre>
-      <p>Try editing the text below the demo and click on the <code>HTML</code> button.</p>
-      <myst-demo>
-        ```{warning}
-          This is a warning
-        ```
-      </myst-demo>
-
-      <myst-demo rows="3">
-        ```{note}
-        This is a warning
-        ```
-      </myst-demo>
-    </article>
-    <script>
-    // Setup Mathjax
-    MathJax = {
-      tex: {
-        inlineMath: [['\\(', '\\)']],
-        displayMath: [['\\[', '\\]']],
-        processEnvironments: false,
-        processRefs: false,
-      },
-      svg: {
-        fontCache: 'global'
-      }
-    };
-    </script>
-    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-  </body>
-</html>
+      </code></pre><p>Try editing the text below the demo and click on the <code>HTML</code> button.</p><myst-demo>```{warning} This is a warning ```</myst-demo><myst-demo rows="3">```{note} This is a warning ```</myst-demo></article><script>// Setup Mathjax
+      MathJax = {
+        tex: {
+          inlineMath: [['\\(', '\\)']],
+          displayMath: [['\\[', '\\]']],
+          processEnvironments: false,
+          processRefs: false,
+        },
+        svg: {
+          fontCache: 'global',
+        },
+      };</script><script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script></body></html>
